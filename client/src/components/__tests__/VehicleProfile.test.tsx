@@ -58,7 +58,7 @@ describe("<VehicleProfile />", () => {
     });
   });
 
-  test("When api req fails displays, error message", async () => {
+  test("When api req fails, displays error message", async () => {
     (fetchData as jest.Mock).mockRejectedValueOnce("Error!");
     render(<Container />);
     expect(props.id).toBeTruthy();
