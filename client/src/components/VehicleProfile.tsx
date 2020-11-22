@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { fetchData } from "../utils/fetchData";
+import useAsync from "../utils/useAsync";
 import { apiUrl } from "./VehicleList";
 
 interface StyledProps {
@@ -103,25 +105,18 @@ const VehicleProfile: React.FunctionComponent<Props> = ({
 }) => {
   const [profileData, setProfileData] = useState<ProfileDataState | null>(null);
 
-  const fetchData = async (id: string) => {
-    const res = await fetch(`${apiUrl}/${id}`, { method: "GET" });
-    try {
-      const data = await res.json();
-      setProfileData(data);
-      return data;
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const [data, error, loading] = useAsync(fetchData, `${apiUrl}/${id}`);
 
   useEffect(() => {
-    fetchData(id);
-  }, [id]);
+    !error && !loading && data && setProfileData(data);
+  }, [data, error, loading]);
 
   const hideBorder = index === 0 ? true : false;
 
   return (
     <VehicleProfileStyled hideBorder={hideBorder}>
+      {error && <div>Something went wrong!</div>}
+      {loading && <div>Loading...</div>}
       <img src={imgUrl} alt={name} />
       <div className="profile-info">
         <h1>{name}</h1>

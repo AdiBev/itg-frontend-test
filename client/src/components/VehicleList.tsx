@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { fetchData } from "../utils/fetchData";
+import useAsync from "../utils/useAsync";
 import VehicleProfile from "./VehicleProfile";
 
 const VehiclListStyled = styled.div`
@@ -24,22 +26,17 @@ export const apiUrl = "http://localhost:3000/api/vehicle";
 const VehicleList: React.FunctionComponent = () => {
   const [vehicleList, setVehicleList] = useState<any[]>([]);
 
-  const fetchData = async () => {
-    const res = await fetch(apiUrl, { method: "GET" });
-    const data = await res.json();
-    setVehicleList(data.vehicles);
-  };
+  const [data, error, loading] = useAsync(fetchData, apiUrl);
 
-  //Fetch data on mount
   useEffect(() => {
-    fetchData();
-  }, []);
+    !loading && !error && setVehicleList(data?.vehicles);
+  }, [data, loading, error]);
 
-  ///Display null if fetch req fails
-  if (vehicleList.length < 1) return null;
-
+  if (vehicleList.length < 0 || !vehicleList) return null;
   return (
     <VehiclListStyled>
+      {loading && <div>Loading...</div>}
+      {error && <div>Something went wrong!</div>}
       {vehicleList.map((vehicle, idx) => (
         <VehicleProfile
           id={vehicle.id}
