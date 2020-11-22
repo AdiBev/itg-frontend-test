@@ -43,7 +43,7 @@ const VehicleProfileStyled = styled.div<StyledProps>`
       text-align: center;
       border-top: unset;
       border-right: ${(p) => `2px solid ${p.theme.colors.grey}`};
-      height: 160px;
+      height: 180px;
     }
 
     h1,
@@ -61,6 +61,7 @@ const VehicleProfileStyled = styled.div<StyledProps>`
         border-bottom: 2px solid ${(p) => p.theme.colors.black};
         width: max-content;
         justify-self: center;
+        margin-top: 20px;
       }
     }
 
