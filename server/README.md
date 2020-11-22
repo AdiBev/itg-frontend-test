@@ -6,6 +6,11 @@
 
 `npm run start`- Runs `index.js` using `Node`
 
+## Endpoints
+`/api/vehicle` - Returns list of vehicle data
+
+`api/vehicle/id` Returns single vehicle data
+
 ## Assets
 
 Assets are served from `images` folder 
